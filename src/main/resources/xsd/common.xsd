@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/common" elementFormDefault="qualified" xmlns:common="http://www.example.org/common">
+	<complexType name="RecordType">
+		<annotation>
+			<documentation>調閱資料</documentation>
+		</annotation>
+		<sequence>
+			<element name="ObjectType" type="common:ObjectTypeType">
+				<annotation>
+					<documentation>調閱目標類別</documentation>
+				</annotation>
+			</element>
+			<element name="Object">
+				<annotation>
+					<documentation>調閱目標</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="64"></maxLength>
+					</restriction>
+				</simpleType>
+			</element>
+            <element name="StartDT" type="dateTime">
+    		<annotation>
+    			<documentation>查詢起始時間</documentation>
+    		</annotation>
+    	</element>
+    	<element name="EndDT" type="dateTime">
+    		<annotation>
+    			<documentation>查詢終止時間</documentation>
+    		</annotation>
+    	</element>
+    	<element name="VendorType" type="common:VendorTypeType">
+    		<annotation>
+    			<documentation>業務種類</documentation>
+    		</annotation>
+    	</element>
+    	<element name="VendorName" type="string">
+    		<annotation>
+    			<documentation>業者名稱</documentation>
+    		</annotation>
+    	</element>
+
+    </sequence>
+    <attribute name="Seq" type="positiveInteger" use="required">
+            <annotation>
+            	<documentation>調閱資料序號</documentation>
+            </annotation>
+    </attribute>
+  </complexType>
+    <simpleType name="VendorTypeType">
+    	<annotation>
+    		<documentation>業者業務種類</documentation>
+    	</annotation>
+    	<restriction base="string">
+    		<enumeration value="3G"></enumeration>
+    		<enumeration value="WiMAX"></enumeration>
+    		<enumeration value="WiFi"></enumeration>
+    		<enumeration value="行網"></enumeration>
+    		<enumeration value="固網"></enumeration>
+    	</restriction>
+    </simpleType>
+    <simpleType name="VendorNameType">
+    <annotation>
+      <documentation>業者名稱</documentation>
+    </annotation>
+    <restriction base="string">
+      <maxLength value="32">
+      </maxLength>
+    </restriction>
+  </simpleType>
+  <simpleType name="DocNoType">
+    <annotation>
+      <documentation>發文案號</documentation>
+    </annotation>
+    <restriction base="string">
+      <maxLength value="64">
+      </maxLength>
+    </restriction>
+  </simpleType>
+  <simpleType name="ObjectTypeType">
+  	<annotation>
+  		<documentation>調閱目標類別; 30: IP Address, 40:線路編號, 50: MAC, 60:帳號,70:MSISDN, 80:BSID, 90:IMEI, 100:IMSI
+  		</documentation>
+  	</annotation>
+  	<restriction base="int">
+  		<enumeration value="30"></enumeration>
+  		<enumeration value="40"></enumeration>
+  		<enumeration value="50"></enumeration>
+  		<enumeration value="60"></enumeration>
+  		<enumeration value="70"></enumeration>
+  		<enumeration value="80"></enumeration>
+  		<enumeration value="90"></enumeration>
+  		<enumeration value="100"></enumeration>
+  	</restriction>
+  </simpleType>
+  <simpleType name="EmailType">
+    <annotation>
+      <documentation>電子郵件</documentation>
+    </annotation>
+    <restriction base="string">
+      <maxLength value="255">
+      </maxLength>
+      <pattern value="\w+([\-\+\.']\w+)*@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*">
+      </pattern>
+    </restriction>
+  </simpleType>
+  <simpleType name="NoteType">
+    <annotation>
+    	<documentation>備註; 可以是註解以及其他任何補充的資訊</documentation>
+    </annotation>
+    <restriction base="string">
+      <maxLength value="256">
+      </maxLength>
+    </restriction>
+  </simpleType>
+  <simpleType name="AddressType">
+    <annotation>
+      <documentation>地址</documentation>
+    </annotation>
+    <restriction base="string">
+      <maxLength value="256">
+      </maxLength>
+    </restriction>
+  </simpleType>
+  <simpleType name="IPV4Type">
+  	<annotation>
+  		<documentation>An IP version 4 address.(allow with port range, ex: 1.2.3.4:1024-2048)</documentation>
+  	</annotation>
+  	<restriction base="string">
+  		<pattern value="[0-9A-Fa-f]{8}(:\d{1,5}(\-\d{1,5})?)?"></pattern>
+  		<pattern
+  			value="((1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(:\d{1,5}(\-\d{1,5})?)?">
+  		</pattern>
+
+  	</restriction>
+  </simpleType>
+  <simpleType name="IPV6Type">
+    <annotation>
+    	<documentation>An IP version 6 address, based on RFC 2373.(allow with port range, ex: 1080:0:0:0:8:800:200C:417A:1024-2048)
+    		</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="::(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){7}(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){5}::([A-Fa-f0-9]{1,4})?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){4}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4})?)?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){3}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,2})?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){2}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,3})?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}:[A-Fa-f0-9]{1,4}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,4})?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,4})?(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){5}:(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){3}::([A-Fa-f0-9]{1,4}:)?(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){2}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4})?:)?(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}:[A-Fa-f0-9]{1,4}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,2}:)?(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+      <pattern value="[A-Fa-f0-9]{1,4}::([A-Fa-f0-9]{1,4}(:[A-Fa-f0-9]{1,4}){0,2}:)?(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))\.(((1?[1-9])?[0-9])|(2[0-4][0-9])|(25[0-5]))(:\d{1,5}(\-\d{1,5})?)?">
+      </pattern>
+    </restriction>
+  </simpleType>
+  <simpleType name="IPAddressType">
+    <annotation>
+    	<documentation>This represents any IP address, IPv4 or IPv6.
+        	</documentation>
+    </annotation>
+    <union memberTypes="common:IPV4Type common:IPV6Type   ">
+    </union>
+  </simpleType>
+  <simpleType name="PhoneNumType">
+        <annotation>
+        	<documentation>電話號碼</documentation>
+        </annotation>
+        <restriction base="string">
+  		<maxLength value="64"></maxLength>
+  	</restriction>
+  </simpleType>
+
+  <simpleType name="MACAddressType">
+        <annotation>
+        	<documentation>MAC Address(Media Access Control Address); 媒體存取控制位址，或稱為實體位址</documentation>
+        </annotation>
+        <restriction base="string">
+  		<pattern value="([0-9a-fA-F]{2}(:|\-)){5}[0-9a-fA-F]{2}"></pattern>
+  	</restriction>
+  </simpleType>
+
+  <simpleType name="AmountType">
+        <annotation>
+        	<documentation>數量</documentation>
+        </annotation>
+        <restriction base="double">
+
+  		<minInclusive value="0"></minInclusive>
+  	</restriction>
+  </simpleType>
+
+  <simpleType name="DataExpectedType">
+  	<annotation>
+  		<documentation>所欲調閱資料的資料業務種類; CUSTOMER_INFO:使用者資料, COMMUNICATION_INFO:通訊紀錄</documentation>
+  	</annotation>
+  	<restriction base="string">
+  		<enumeration value="CUSTOMER_INFO"></enumeration>
+  		<enumeration value="COMMUNICATION_INFO"></enumeration>
+  	</restriction>
+  </simpleType>
+
+    <simpleType name="AccountType">
+    	<restriction base="string"></restriction>
+    </simpleType>
+
+
+
+
+
+
+
+
+    
+
+
+    
+    
+
+</schema>

@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.example.org/response" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:response="http://www.example.org/response" xmlns:common="http://www.example.org/common">
+  <import schemaLocation="common.xsd" namespace="http://www.example.org/common">
+  </import>
+  <complexType name="ResponseType">
+    <annotation>
+      <documentation>資料回覆</documentation>
+    </annotation>
+    <sequence>
+      <element name="Status" type="response:StatusType">
+        <annotation>
+          <documentation>回覆狀態</documentation>
+        </annotation>
+      </element>
+      <element name="ResDT" type="dateTime">
+        <annotation>
+          <documentation>回覆時間</documentation>
+        </annotation>
+      </element>
+      <element name="DocNo" type="common:DocNoType">
+        <annotation>
+          <documentation>發文案號</documentation>
+        </annotation>
+      </element>
+      <element name="Comment" type="common:NoteType">
+        <annotation>
+          <documentation>回覆備註</documentation>
+        </annotation>
+      </element>
+      <element name="Record" type="response:RecordType" minOccurs="1" maxOccurs="unbounded">
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="GenderType">
+    <annotation>
+      <documentation>性別; 0:未知, 1:男性, 2:女性</documentation>
+    </annotation>
+    <restriction base="int">
+      <enumeration value="0">
+      </enumeration>
+      <enumeration value="1">
+      </enumeration>
+      <enumeration value="2">
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="StatusType">
+    <annotation>
+      <documentation>回覆狀態; -1:退件, 1:成功</documentation>
+    </annotation>
+    <restriction base="int">
+      <enumeration value="-1">
+      </enumeration>
+      <enumeration value="1">
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="IDTypeType">
+  	<annotation>
+  		<documentation>
+  			證號類別; 0:unknown, 1:身份證字號, 2:公司統一編號, 3:居留證號碼, 4:護照號碼,
+  			5:稅籍編號, 6:健保卡, 7:駕照
+  		</documentation>
+  	</annotation>
+  	<restriction base="int">
+  		<enumeration value="0"></enumeration>
+  		<enumeration value="1"></enumeration>
+  		<enumeration value="2"></enumeration>
+  		<enumeration value="3"></enumeration>
+  		<enumeration value="4"></enumeration>
+  		<enumeration value="5"></enumeration>
+  		<enumeration value="6"></enumeration>
+  		<enumeration value="7"></enumeration>
+  	</restriction>
+  </simpleType>
+  <complexType name="CustomerInfoType">
+    <annotation>
+      <documentation>客戶個資</documentation>
+    </annotation>
+    <sequence>
+      <element name="UID">
+        <annotation>
+          <documentation>用戶識別碼</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Name">
+        <annotation>
+          <documentation>用戶名稱</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="128">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="BillingAddress" type="common:AddressType">
+        <annotation>
+          <documentation>帳寄地址</documentation>
+        </annotation>
+      </element>
+      <element name="CustomerAddress" type="common:AddressType">
+        <annotation>
+          <documentation>戶籍地址</documentation>
+        </annotation>
+      </element>
+      <element name="IDType" type="response:IDTypeType">
+        <annotation>
+          <documentation>證號類別</documentation>
+        </annotation>
+      </element>
+      <element name="ID">
+        <annotation>
+          <documentation>證號</documentation>
+        </annotation>
+        <simpleType>
+        	<restriction base="string">
+        		<maxLength value="32"></maxLength>
+        	</restriction>
+        </simpleType>
+      </element>
+      <group ref="response:SecondID" maxOccurs="1" minOccurs="0"></group>      <element name="Email" type="common:EmailType" nillable="true" maxOccurs="1" minOccurs="0">
+        <annotation>
+          <documentation>電子郵件</documentation>
+        </annotation>
+      </element>
+      <element name="Gender" type="response:GenderType">
+        <annotation>
+          <documentation>性別</documentation>
+        </annotation>
+      </element>
+      <element name="Birthday" type="date" maxOccurs="1" minOccurs="0">
+        <annotation>
+          <documentation>生日</documentation>
+        </annotation>
+      </element>
+      <element name="ReqDate" type="date">
+        <annotation>
+          <documentation>客戶承租相關業務之申請日期</documentation>
+        </annotation>
+      </element>
+      <element name="StartDT" type="dateTime">
+        <annotation>
+          <documentation>客戶承租相關業務生效起始時間</documentation>
+        </annotation>
+      </element>
+      <element name="EndDT" type="dateTime" maxOccurs="1" minOccurs="0">
+        <annotation>
+          <documentation>客戶之於相關業務退租時間</documentation>
+        </annotation>
+      </element>
+      <element name="Note" type="common:NoteType" nillable="true">
+        <annotation>
+          <documentation>備註</documentation>
+        </annotation>
+      </element>
+      <element name="VendorSpecific" type="response:VenderSpecificType">
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="CellInfoType">
+    <annotation>
+      <documentation>通聯之基地台相關資訊</documentation>
+    </annotation>
+    <sequence>
+      <element name="StartDT" type="dateTime">
+        <annotation>
+          <documentation>進入基地台時間</documentation>
+        </annotation>
+      </element>
+      <element name="Duration">
+        <annotation>
+          <documentation>於該基地台通聯時間</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="long">
+            <maxInclusive value="999999999">
+            </maxInclusive>
+            <minInclusive value="0">
+            </minInclusive>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="EndDT" type="dateTime" nillable="true" default="1970-01-01T00:00:00">
+        <annotation>
+          <documentation>離開基地台時間</documentation>
+        </annotation>
+      </element>
+      <group ref="response:StartCell" maxOccurs="1" minOccurs="0"></group>
+      <group ref="response:EndCell" maxOccurs="1" minOccurs="0"></group>
+      <group ref="response:DataUsage" maxOccurs="1" minOccurs="0"></group>
+      <element name="IMEI">
+        <annotation>
+          <documentation>當時所用手機序號</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Note" type="common:NoteType" nillable="true">
+        <annotation>
+          <documentation>備註</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="CellIDType">
+    <annotation>
+      <documentation>
+    			Cell Global Identity(CGI); 15個數字, ex: 466010113155760
+    			(IMSI前5碼加上LAC+CellID)
+    		</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="(\d{15})?">
+      </pattern>
+    </restriction>
+  </simpleType>
+  <simpleType name="CellAddressType">
+    <annotation>
+      <documentation>基地台 Cell 方向所座落的地址</documentation>
+    </annotation>
+    <restriction base="common:AddressType">
+      <maxLength value="256">
+      </maxLength>
+    </restriction>
+  </simpleType>
+  <complexType name="RecordType">
+    <annotation>
+    	<documentation>回覆的調閱項目資料</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="common:RecordType">
+        <sequence>        	<element name="Result" type="response:ResultType" minOccurs="0" maxOccurs="unbounded">
+        		<annotation>
+        			<documentation>查詢結果</documentation>
+        		</annotation></element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <group name="VendorSpecificFixNetwork">
+    <annotation>
+      <documentation>客戶個資 固網 specific</documentation>
+    </annotation>
+    <sequence>
+      <element name="InstallAddress" type="common:AddressType">
+        <annotation>
+          <documentation>申裝地址</documentation>
+        </annotation>
+      </element>
+      <element name="DedicatedLine" nillable="true">
+        <annotation>
+          <documentation>專線號碼</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="AttachNumber" nillable="true">
+        <annotation>
+          <documentation>附掛電話</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="ServiceType">
+        <annotation>
+          <documentation>服務類別(0: 未知, 1: 固網, 2: 浮動)</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="0">
+            </enumeration>
+            <enumeration value="1">
+            </enumeration>
+            <enumeration value="2">
+            </enumeration>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="LANIP" type="common:IPAddressType" nillable="true" maxOccurs="1" minOccurs="0">
+        <annotation>
+          <documentation>LAN-IP</documentation>
+        </annotation>
+      </element>
+      <element name="WANIP" type="common:IPAddressType" nillable="true" maxOccurs="1" minOccurs="0">
+        <annotation>
+          <documentation>WAN-IP</documentation>
+        </annotation>
+      </element>
+      <element name="Contact">
+        <annotation>
+          <documentation>帳戶聯絡人姓名(申請人)</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Phone" type="common:PhoneNumType">
+        <annotation>
+          <documentation>聯絡電話(申請人)</documentation>
+        </annotation>      </element>
+    </sequence>
+  </group>
+  <group name="VendorSpecific3G">
+    <annotation>
+      <documentation>客戶個資 3G specific</documentation>
+    </annotation>
+    <sequence>
+      <element name="MSISDN">
+        <annotation>
+          <documentation>申請號碼</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Category">
+        <annotation>
+          <documentation>門號類型</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Phone" nillable="true" type="common:PhoneNumType">
+        <annotation>
+          <documentation>其他聯絡電話</documentation>
+        </annotation>      </element>
+      <element name="Usage" nillable="true">
+        <annotation>
+          <documentation>其他聯絡電話用途(ex:公司電話)</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </group>
+  <complexType name="VenderSpecificType">
+    <annotation>
+      <documentation>Vendor specific Customer Information Data</documentation>
+    </annotation>
+    <choice>
+      <group ref="response:VendorSpecificFixNetwork">
+      </group>
+      <group ref="response:VendorSpecific3G">
+      </group>
+    </choice>
+  </complexType>
+  <element name="Response" type="response:ResponseType">
+    <key name="ResponseRecordSeqKey">
+      <selector xpath=".//response:Record" />
+      <field xpath="@Seq" />
+    </key>
+  </element>
+
+  <complexType name="ResultType">
+  	<annotation>
+  		<documentation>查詢結果</documentation>
+  	</annotation>
+  	<sequence>
+  		<element name="CustomerInfo" type="response:CustomerInfoType"
+  			minOccurs="1" maxOccurs="1">
+  			<annotation>
+  				<documentation>客戶資訊</documentation>
+  			</annotation>
+  		</element>
+
+  		<choice maxOccurs="unbounded" minOccurs="0">
+  			<element name="CellInfo" type="response:CellInfoType">
+  				<annotation>
+  					<documentation>3G基地台通聯資訊</documentation>
+  				</annotation>
+  			</element>
+
+
+  			<element name="WiFiInfo" type="response:WiFiInfoType"></element>
+  		</choice>
+  	</sequence>
+  </complexType>
+
+  <group name="StartCell">
+        <annotation>
+        	<documentation>進入基地台資訊群組</documentation>
+        </annotation>
+        <sequence>
+  		<element name="CellID" type="response:CellIDType"></element>
+  		<element name="CellAddress" type="common:AddressType"></element>
+  	</sequence>
+  </group>
+
+
+  <group name="EndCell">
+        <annotation>
+        	<documentation>離開基地台資訊群組(Handover之前一個基地台)</documentation>
+        </annotation>
+        <sequence>
+  		<element name="CellEndID" type="response:CellIDType"></element>
+  		<element name="CellEndAddress" type="common:AddressType"></element>
+        </sequence>
+  </group>
+
+  <group name="SecondID">
+        <annotation>
+        	<documentation>第二證件資訊群組</documentation>
+        </annotation>
+        <sequence>
+  		<element name="SecondIDType" type="response:IDTypeType"></element>
+  		<element name="SecondID">
+  			<simpleType>
+  				<restriction base="string">
+  					<maxLength value="32"></maxLength>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  	</sequence>
+  </group>
+
+
+
+
+  <simpleType name="ApIDType">
+  	<restriction base="response:CellIDType">
+  		<pattern value="([\d\w]{1,15})?"></pattern>
+  	</restriction>
+  </simpleType>
+
+
+  <complexType name="DataUsageType">
+  	<annotation>
+  		<documentation>使用量</documentation>
+  	</annotation>
+  	<simpleContent>
+  		<extension base="common:AmountType">
+  			<attribute name="Unit">
+  				<annotation>
+  					<documentation>網路用量單位</documentation>
+  				</annotation>
+  				<simpleType>
+  					<restriction base="string">
+  						<enumeration value="BYTE"></enumeration>
+  						<enumeration value="KB"></enumeration>
+  						<enumeration value="MB"></enumeration>
+  						<enumeration value="GB"></enumeration>
+  						<enumeration value="TB"></enumeration>
+  						<enumeration value="PB"></enumeration>
+  						<enumeration value="EB"></enumeration>
+  						<enumeration value="ZB"></enumeration>
+  					</restriction>
+  				</simpleType>
+  			</attribute>
+  		</extension>
+  	</simpleContent>
+  </complexType>
+
+  <complexType name="WiFiAccessInfoType">
+        <annotation>
+        	<documentation>WiFi的使用存取紀錄資料</documentation>
+        </annotation>
+        <sequence>
+        	<element name="StartDT" type="dateTime"></element>
+        	<element name="Duration">
+        		<simpleType>
+        			<restriction base="long">
+        				<minInclusive value="0"></minInclusive>
+        			</restriction>
+        		</simpleType>
+        	</element>
+        	<element name="EndDT" type="dateTime"></element>
+        	<group ref="response:DataUsage"></group>
+            <element name="UserAccount" type="common:AccountType">
+            	<annotation>
+            		<documentation>使用者連線WiFi所使用的帳號,  可以是任何值(SubscriberID, RADIUS, MSISDN ...)</documentation></annotation></element>
+            <element name="UserDeviceIP" type="common:IPAddressType"></element>
+        	<element name="UserDeviceMAC"
+        		type="common:MACAddressType">
+        	</element>
+        	<element name="Note" type="common:NoteType">
+        		<annotation>
+        			<documentation>備註</documentation>
+        		</annotation>
+        	</element>
+
+
+        </sequence>
+  </complexType>
+
+  <complexType name="WiFiApInfoType">
+        <annotation>
+        	<documentation>WiFi的Ap主機資訊</documentation>
+        </annotation>
+        <sequence>
+  		<element name="WiFiApID">
+  			<annotation>
+  				<documentation>WiFi AP的ID</documentation>
+  			</annotation>
+  			<simpleType>
+  				<restriction base="string">
+  					<pattern value="([\d\w]{1,15})?"></pattern>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  		<element name="WiFiApAddress" type="common:AddressType">
+  			<annotation>
+  				<documentation>WiFi Ap所在位置的地址</documentation>
+  			</annotation>
+  		</element>
+  		<element name="WiFiApType">
+  			<annotation>
+  				<documentation>WiFi Ap類型</documentation>
+  			</annotation>
+  			<simpleType>
+  				<restriction base="string">
+  					<maxLength value="64"></maxLength>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  		<element name="WiFiApIP" type="common:IPAddressType">
+  			<annotation>
+  				<documentation>WiFi Ap的 IP</documentation>
+  			</annotation>
+  		</element>
+  		<element name="WiFiApMAC" type="common:MACAddressType">
+  			<annotation>
+  				<documentation>WiFi AP的MAC Address</documentation>
+  			</annotation>
+  		</element>
+  		<element name="Longitude">
+  			<annotation>
+  				<documentation>WiFi Ap所在位置的十進位(DD)格式經度</documentation>
+  			</annotation>
+  			<simpleType>
+  				<restriction base="double">
+
+  					<minInclusive value="-180"></minInclusive>
+
+  					<maxInclusive value="180"></maxInclusive>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  		<element name="Latitude">
+
+  			<annotation>
+  				<documentation>WiFi Ap所在位置的十進位(DD)格式緯度</documentation>
+  			</annotation>
+  			<simpleType>
+  				<restriction base="double">
+
+  					<minInclusive value="-90"></minInclusive>
+
+  					<maxInclusive value="90"></maxInclusive>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  		<element name="InDoorOutDoor">
+  			<annotation>
+  				<documentation>WiFi Ap位於室內或室外</documentation>
+  			</annotation>
+  			<simpleType>
+  				<restriction base="string">
+  					<enumeration value="INDOOR"></enumeration>
+  					<enumeration value="OUTDOOR"></enumeration>
+  				</restriction>
+  			</simpleType>
+  		</element>
+
+  		<element name="Note" type="common:NoteType">
+  			<annotation>
+  				<documentation>備註</documentation>
+  			</annotation></element>
+  	</sequence>
+  </complexType>
+
+
+  <group name="DataUsage">
+        <annotation>
+        	<documentation>網路使用量群組</documentation>
+        </annotation>
+        <sequence>
+  		<element name="UploadDataUsage"
+  			type="response:DataUsageType">
+                <annotation>
+                	<documentation>上傳使用量</documentation>
+                </annotation>
+  		</element>
+  		<element name="DownloadDataUsage"
+  			type="response:DataUsageType">
+                <annotation>
+                	<documentation>下載使用量</documentation>
+                </annotation>
+  		</element>
+  		<element name="TotalDataUsage" type="response:DataUsageType">
+  			<annotation>
+  				<documentation>全部使用量</documentation>
+  			</annotation></element>
+  	</sequence>
+  </group>
+
+  <complexType name="WiFiInfoType">
+  	<sequence>
+  		<element name="WiFiApInfo" type="response:WiFiApInfoType"></element>
+  		<element name="WiFiAccessInfo" type="response:WiFiAccessInfoType" maxOccurs="unbounded" minOccurs="1"></element>
+  	</sequence>
+  </complexType>
+</schema>

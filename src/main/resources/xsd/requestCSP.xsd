@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.example.org/request" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:request="http://www.example.org/request" xmlns:common="http://www.example.org/common">
+  <import schemaLocation="common.xsd" namespace="http://www.example.org/common">
+  </import>
+  <complexType name="RequestType">
+    <annotation>
+      <documentation>調閱請求</documentation>
+    </annotation>
+    <sequence>
+      <element name="ReqDT" type="dateTime">
+        <annotation>
+          <documentation>投調閱單時間</documentation>
+        </annotation>
+      </element>
+      <element name="DocNo" type="common:DocNoType">
+        <annotation>
+          <documentation>發文案號</documentation>
+        </annotation>
+      </element>
+      <element name="Law">
+        <annotation>
+          <documentation>法律依據</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Branch">
+        <annotation>
+          <documentation>申請單位</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Usage">
+        <annotation>
+          <documentation>資料用途</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="64">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="ContactName">
+        <annotation>
+          <documentation>聯絡人</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <maxLength value="32">
+            </maxLength>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="ContactTel" type="common:PhoneNumType">
+        <annotation>
+          <documentation>聯絡人電話</documentation>
+        </annotation>
+      </element>
+      <element name="ContactMail" type="common:EmailType">
+        <annotation>
+          <documentation>連絡人電子信箱</documentation>
+        </annotation>
+      </element>
+      <element name="DocDescription" type="common:NoteType">
+        <annotation>
+          <documentation>案件說明</documentation>
+        </annotation>
+      </element>
+      <element name="ReqStartDT" type="dateTime">
+        <annotation>
+          <documentation>調閱啟始時間</documentation>
+        </annotation>
+      </element>
+      <element name="ReqEndDT" type="dateTime">
+        <annotation>
+          <documentation>調閱結束時間</documentation>
+        </annotation>
+      </element>
+      <element name="Realtime">
+        <annotation>
+          <documentation>即時定位; -1:否, 1:是</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="int">
+            <enumeration value="-1">
+            </enumeration>
+            <enumeration value="1">
+            </enumeration>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="Record" type="request:RecordType" minOccurs="1" maxOccurs="unbounded">
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="RecordType">
+  	<annotation>
+  		<documentation>請求的調閱資料</documentation>
+  	</annotation>
+  	<complexContent>
+  		<extension base="common:RecordType">
+  			<sequence>
+  				<group ref="request:OriginTarget" maxOccurs="1"
+  					minOccurs="0">
+  				</group>
+                    <element name="DataExpectedType" type="common:DataExpectedType" minOccurs="0" maxOccurs="1">
+                    	<annotation>
+                    		<documentation>所欲調閱資料的資料業務種類; CUSTOMER_INFO:使用者資料, COMMUNICATION_INFO:通訊紀錄</documentation></annotation></element>
+                    <element name="Notify">
+  					<annotation>
+  						<documentation>上線通知; -1:否, 1:是</documentation>
+  					</annotation>
+  					<simpleType>
+  						<restriction base="int">
+  							<enumeration value="-1"></enumeration>
+  							<enumeration value="1"></enumeration>
+  						</restriction>
+  					</simpleType>
+  				</element>
+  			</sequence>
+  		</extension>
+  	</complexContent>
+  </complexType>
+  <element name="Request" type="request:RequestType">
+    <key name="RequestRecordSeqKey">
+      <selector xpath=".//request:Record" />
+      <field xpath="@Seq" />
+    </key>
+  </element>
+
+  <group name="OriginTarget">
+  	<sequence>
+  		<element name="OriginType" type="common:ObjectTypeType">
+  			<annotation>
+  				<documentation>此次調閱目標所依據之前次調閱目標的種類</documentation>
+  			</annotation></element>
+
+  		<element name="OriginObj">
+                <annotation>
+                	<documentation>此次調閱目標所依據之前次調閱目標的目標值</documentation>
+                </annotation>
+                <simpleType>
+  				<restriction base="string">
+  					<maxLength value="64"></maxLength>
+  				</restriction>
+  			</simpleType>
+  		</element>
+  	</sequence>
+  </group>
+
+</schema>
